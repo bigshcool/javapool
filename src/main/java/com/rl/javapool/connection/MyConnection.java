@@ -22,6 +22,17 @@ import java.util.concurrent.Executor;
 
 public class MyConnection implements Connection {
     
+    private String name;
+    
+    public MyConnection(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public String toString() {
+        return "MyConnection{" + "name='" + name + '\'' + '}';
+    }
+    
     @Override
     public Statement createStatement() throws SQLException {
         return null;

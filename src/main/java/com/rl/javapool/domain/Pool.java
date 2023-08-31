@@ -1,11 +1,16 @@
 package com.rl.javapool.domain;
 
 import com.rl.javapool.connection.MyConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.sql.Connection;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
+
 public class Pool {
+    private static final Logger LOG = LoggerFactory.getLogger(Pool.class);
     // 1. 连接池大小
     private final int poolSize;
     
@@ -21,7 +26,7 @@ public class Pool {
         this.connections = new Connection[poolSize];
         this.states = new AtomicIntegerArray(poolSize);
         for (int i = 0; i < this.connections.length; i++){
-            connections[i] = new MyConnection();
+            connections[i] = new MyConnection("连接" + (i + 1));
         }
     }
     
@@ -31,6 +36,7 @@ public class Pool {
             for (int i = 0; i < poolSize; i++){
                 if (states.get(i) == 0){
                     if (states.compareAndSet(i, 0, 1)){
+                        LOG.info("borrow {}", connections[i]);
                         return connections[i];
                     }
                 }
@@ -52,6 +58,7 @@ public class Pool {
         for (int i = 0; i < poolSize; i++){
             if (connections[i] == con){
                 states.set(i, 0);
+                LOG.info("free {}", connections[i]);
                 synchronized (this){
                     this.notifyAll();
                 }
