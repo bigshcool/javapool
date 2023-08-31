@@ -2,6 +2,7 @@ package com.rl.threadpool.queue;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,6 +21,30 @@ public class BlockingQueue<T> {
     
     // 5. 容量
     private int capcity;
+    
+    // 6 带超时的阻塞获取
+    public T poll(long timeout, TimeUnit unit){
+        lock.lock();
+        try {
+            long nanos = unit.toNanos(timeout);
+            while (deque.isEmpty()){
+                try {
+                    if (nanos <= 0){
+                        return null;
+                    }
+                    nanos = emptyWaitSet.awaitNanos(nanos);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            T t = deque.peekFirst();
+            fullWaitSet.signal();
+            return t;
+        }finally {
+            lock.unlock();
+        }
+    }
+    
     
     // 阻塞获取
     public T take(){
