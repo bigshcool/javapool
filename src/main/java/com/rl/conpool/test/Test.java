@@ -1,6 +1,6 @@
-package com.rl.javapool.test;
+package com.rl.conpool.test;
 
-import com.rl.javapool.domain.Pool;
+import com.rl.conpool.domain.Pool;
 
 import java.sql.Connection;
 import java.util.Random;

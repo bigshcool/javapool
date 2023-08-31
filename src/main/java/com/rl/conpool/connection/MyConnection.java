@@ -1,6 +1,5 @@
-package com.rl.javapool.connection;
+package com.rl.conpool.connection;
 
-import javax.print.DocFlavor;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;

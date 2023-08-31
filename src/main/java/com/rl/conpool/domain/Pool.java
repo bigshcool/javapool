@@ -1,6 +1,6 @@
-package com.rl.javapool.domain;
+package com.rl.conpool.domain;
 
-import com.rl.javapool.connection.MyConnection;
+import com.rl.conpool.connection.MyConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
